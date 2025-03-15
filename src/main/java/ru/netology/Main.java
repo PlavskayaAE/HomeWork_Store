@@ -1,45 +1,32 @@
 package ru.netology;
 
-import com.opencsv.CSVReader;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Scanner;
 
 public class Main {
-    static List<Product> store = new ArrayList<>();
 
     public static void main(String[] args) {
-        store = startStore(); // Лист со всеми продуктами
-        printStoreList(); // Выведение полки магазина в консоль
+        Store.startStore();// Формирует актуальный лист со всеми продуктами из файла
+        Scanner scanner = new Scanner(System.in);
 
-
-    }
-
-
-    static List<Product> startStore() {
-        String[] columnMapping = {"name", "manufacturer", "price"};
-        List<Product> store = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader("C:/Users/Александра/IdeaProjects/HW_MagicDrySOLID/src/main/java/ru/netology/store.csv"))) {
-            ColumnPositionMappingStrategy<Product> strategy = new ColumnPositionMappingStrategy<>();
-            strategy.setType(Product.class);
-            strategy.setColumnMapping(columnMapping);
-            CsvToBean<Product> csv = new CsvToBeanBuilder<Product>(reader)
-                    .withMappingStrategy(strategy)
-                    .build();
-            store = csv.parse();
-        } catch (Exception e) {
-            e.printStackTrace();
+        System.out.println("""
+                Приветствуем в магазине шоколада!
+                Выберите действие:
+                1. Посмотреть доступные товары
+                2. Сделать заказ
+                3. Поиск товара по названию производителя
+                4. Поиск товара по цене
+                5. Повторить предыдущий заказ
+                """);
+        int input = Integer.parseInt(scanner.nextLine());
+        switch (input) {
+            case (1):Store.printStoreList();
         }
-        return store;
+
     }
 
-    static void printStoreList() {
-        for (int i = 0; i < store.size(); i++) {
-            System.out.println((i+1) + ". " + store.get(i).toString());
-        }
-    }
+
+
+
+
+
 }
