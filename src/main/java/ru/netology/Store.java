@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Store {
-    static List<Product> store = new ArrayList<>();
+   private static List<Product> store = new ArrayList<>();
 
     static List<Product> getStore() {
         return store;
@@ -30,12 +30,14 @@ public class Store {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        for (int i=0; i< store.size(); i++){
+            store.get(i).setArticle(i+1);
+        }
     }
 
     static void printStoreList() {
         for (int i = 0; i < store.size(); i++) {
-            System.out.println((i + 1) + ". " + store.get(i).toString());
+            System.out.println(store.get(i).toString());
         }
     }
 

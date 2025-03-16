@@ -1,18 +1,27 @@
 package ru.netology;
 
 public class Product {
-  private String name;
-  private String manufacturer;
-  private int price;
+    private int article;
+    private String name;
+    private String manufacturer;
+    private int price;
 
     public Product() {
+    }
+
+    public int getArticle() {
+        return article;
+    }
+
+    public void setArticle(int article) {
+        this.article = article;
     }
 
     public String getName() {
         return name;
     }
 
-      public String getManufacturer() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
@@ -23,9 +32,9 @@ public class Product {
     @Override
     public String toString() {
         return
-                "Шоколад " + name + ", " +
-                "Производитель: " + manufacturer + ", " +
-                "Цена: " + price + " рублей";
+                article + ". Шоколад " + name + ", " +
+                        "Производитель: " + manufacturer + ", " +
+                        "Цена: " + price + " рублей";
 
     }
 }
