@@ -44,21 +44,21 @@ public class Main {
                 case 4:
                     System.out.println("Укажите, пожалуйста, название товара, который Вы хотели бы найти: ");
                     String inputName = scanner.nextLine();
-                    searchByName(inputName);
+                    SerchProduct.searchByName(inputName);
                     printStartMsg();
                     break;
 
                 case 5:
                     System.out.println("Укажите, пожалуйста, чьи товары Вы хотели бы найти: ");
                     String inputManufacturer = scanner.nextLine();
-                    searchByManufacturer(inputManufacturer);
+                    SerchProduct.searchByManufacturer(inputManufacturer);
                     printStartMsg();
                     break;
 
                 case 6:
                     System.out.println("Укажите, пожалуйста, максимальную стоимость товаров, которые Вы хотели бы найти: ");
                     int inputPrice = Integer.parseInt(scanner.nextLine());
-                    searchByPrice(inputPrice);
+                    SerchProduct.searchByPrice(inputPrice);
                     printStartMsg();
                     break;
 
@@ -115,53 +115,6 @@ public class Main {
                 """);
     }
 
-    public static void searchByManufacturer(String manufacturer) {
-        boolean count = false;
-        for (Product product : Store.getStore()) {
-            if (product.getManufacturer().toLowerCase().contains(manufacturer.toLowerCase())) {
-                if (!count) {
-                    System.out.println("Вот что удалось найти:");
-                }
-                System.out.println(product);
-                count = true;
-            }
-        }
-        if (!count) {
-            System.out.println("Товаров с таким производителем не найдено!");
-        }
-    }
-
-    public static void searchByName(String name) {
-        boolean count = false;
-        for (Product product : Store.getStore()) {
-            if (product.getName().toLowerCase().contains(name.toLowerCase())) {
-                if (!count) {
-                    System.out.println("Вот что удалось найти:");
-                }
-                System.out.println(product);
-                count = true;
-            }
-        }
-        if (!count) {
-            System.out.println("Товаров с таким названием не найдено!");
-        }
-    }
-
-    public static void searchByPrice(int price) {
-        boolean count = false;
-        for (Product product : Store.getStore()) {
-            if (product.getPrice() <= price) {
-                if (!count) {
-                    System.out.println("Вот что удалось найти:");
-                }
-                System.out.println(product);
-                count = true;
-            }
-        }
-        if (!count) {
-            System.out.println("Товаров в пределах такой стоимости не найдено!");
-        }
-    }
 
     public static void putOnBasket(int[][] basket, int article, int amount) {
         if ((article > 0) & (article <= basket.length) & (amount > 0)) {
