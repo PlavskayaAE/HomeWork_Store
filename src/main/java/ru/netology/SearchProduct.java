@@ -1,13 +1,12 @@
 package ru.netology;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public interface SerchProduct {
+public interface SearchProduct {
 
-      static void searchByManufacturer(String manufacturer) {
+      static void searchByManufacturer(String manufacturer, List <Product> list) {
         boolean count = false;
-        for (Product product : Store.getStore()) {
+        for (Product product : list) {
             if (product.getManufacturer().toLowerCase().contains(manufacturer.toLowerCase())) {
                 if (!count) {
                     System.out.println("Вот что удалось найти:");
@@ -21,9 +20,9 @@ public interface SerchProduct {
         }
     }
 
-    static void searchByName(String name) {
+    static void searchByName(String name, List <Product>list) {
         boolean count = false;
-        for (Product product : Store.getStore()) {
+        for (Product product : list) {
             if (product.getName().toLowerCase().contains(name.toLowerCase())) {
                 if (!count) {
                     System.out.println("Вот что удалось найти:");
@@ -37,9 +36,9 @@ public interface SerchProduct {
         }
     }
 
-    static void searchByPrice(int price) {
+    static void searchByPrice(int price, List<Product>list) {
         boolean count = false;
-        for (Product product : Store.getStore()) {
+        for (Product product : list) {
             if (product.getPrice() <= price) {
                 if (!count) {
                     System.out.println("Вот что удалось найти:");

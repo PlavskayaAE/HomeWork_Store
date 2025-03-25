@@ -2,13 +2,13 @@ package ru.netology;
 
 import java.util.Scanner;
 
-public class Main {
+public class Main implements BasketAtctions {
 
 
     public static void main(String[] args) {
         Store.startStore();// Формирует актуальный лист со всеми продуктами из файла
-        int[][] basket = newBasket();// В корзине будет храниться информация о наименовании товаров и их количестве
-        int[][] previousBasket = newBasket();// В этой корзине будет храниться последний завершенный заказ. Пока не завершен первый заказ, корзина пуста
+        int[][] basket = BasketAtctions.newBasket(Store.getStore());// В корзине будет храниться информация о наименовании товаров и их количестве
+        int[][] previousBasket = BasketAtctions.newBasket(Store.getStore());// В этой корзине будет храниться последний завершенный заказ. Пока не завершен первый заказ, корзина пуста
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Приветствуем в магазине шоколада!");
@@ -28,7 +28,7 @@ public class Main {
                     int articleForPut = Integer.parseInt(scanner.nextLine());
                     System.out.println("Укажите количество товара: ");
                     int amountForPut = Integer.parseInt(scanner.nextLine());
-                    putOnBasket(basket, articleForPut, amountForPut);
+                    BasketAtctions.putOnBasket(basket, articleForPut, amountForPut);
                     printStartMsg();
                     break;
 
@@ -37,28 +37,28 @@ public class Main {
                     int articleForRemove = Integer.parseInt(scanner.nextLine());
                     System.out.println("Укажите количество товара: ");
                     int amountForRemove = Integer.parseInt(scanner.nextLine());
-                    RemoveFromBasket(basket, articleForRemove, amountForRemove);
+                    BasketAtctions.RemoveFromBasket(basket, articleForRemove, amountForRemove);
                     printStartMsg();
                     break;
 
                 case 4:
                     System.out.println("Укажите, пожалуйста, название товара, который Вы хотели бы найти: ");
                     String inputName = scanner.nextLine();
-                    SerchProduct.searchByName(inputName);
+                    SearchProduct.searchByName(inputName, Store.getStore());
                     printStartMsg();
                     break;
 
                 case 5:
                     System.out.println("Укажите, пожалуйста, чьи товары Вы хотели бы найти: ");
                     String inputManufacturer = scanner.nextLine();
-                    SerchProduct.searchByManufacturer(inputManufacturer);
+                    SearchProduct.searchByManufacturer(inputManufacturer, Store.getStore());
                     printStartMsg();
                     break;
 
                 case 6:
                     System.out.println("Укажите, пожалуйста, максимальную стоимость товаров, которые Вы хотели бы найти: ");
                     int inputPrice = Integer.parseInt(scanner.nextLine());
-                    SerchProduct.searchByPrice(inputPrice);
+                    SearchProduct.searchByPrice(inputPrice, Store.getStore());
                     printStartMsg();
                     break;
 
@@ -68,11 +68,11 @@ public class Main {
                     break;
 
                 case 8:
-                    if (basketIsEmpty(previousBasket)) {
+                    if (BasketAtctions.basketIsEmpty(previousBasket)) {
                         System.out.println("Нет информации о предыдущем заказе. Соберите корзину еще раз.");
                     } else {
                         System.out.println("В прошлый раз Вы заказывали:");
-                        printBasket(previousBasket);
+                        BasketAtctions.printBasket(previousBasket, Store.getStore());
                         System.out.println("Если хотите повторить заказ, напишете 'да':");
                         String yes = scanner.nextLine();
                         if (yes.equalsIgnoreCase("да")) {
@@ -86,7 +86,7 @@ public class Main {
                     break;
 
                 case 9:
-                    printBasket(basket);
+                    BasketAtctions.printBasket(basket, Store.getStore());
                     printStartMsg();
                     break;
 
@@ -115,65 +115,13 @@ public class Main {
                 """);
     }
 
-
-    public static void putOnBasket(int[][] basket, int article, int amount) {
-        if ((article > 0) & (article <= basket.length) & (amount > 0)) {
-            basket[article - 1][1] += amount;
-            System.out.println("Товары успешно добавлены!");
-        } else {
-            System.out.println("Не удалось добавить товары в корзину! " +
-                    "Убедитесь, что указали правильный номер товара и количество товаров больше 0");
-        }
-    }
-
-    public static void RemoveFromBasket(int[][] basket, int article, int amount) {
-        if ((article > 0) & (article <= basket.length) & (amount > 0)) {
-            if ((basket[article - 1][1] - amount) < 0) {
-                basket[article - 1][1] = 0;
-                System.out.println("В Вашей корзине не было такого количества товаров! Все товары с данным номером удалены из корзины.");
-            } else {
-                basket[article - 1][1] -= amount;
-                System.out.println("Товары успешно удалены!");
-            }
-        } else {
-            System.out.println("Не удалось удалить товары из корзины! " +
-                    "Убедитесь, что указали правильный номер товара и количество товаров после удаления больше или равно 0");
-        }
-    }
-
-    public static int[][] newBasket() {
-        int[][] basket = new int[Store.getStore().size()][2];
-        for (int i = 0; i < basket.length; i++) {
-            basket[i][0] = Store.getStore().get(i).getArticle();
-            basket[i][1] = 0;
-        }
-        return basket;
-    }
-
-    public static void printBasket(int[][] basket) {
-        int count = 0;
-        int sum = 0;
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i][1] != 0) {
-                count += basket[i][1];
-                sum += Store.getStore().get(i).getPrice() * basket[i][1];
-                System.out.println(Store.getStore().get(i).getName() + " - " + basket[i][1] + " шт.");
-            }
-        }
-        if (count == 0) {
-            System.out.println("Ваша корзина пока пуста!");
-        } else {
-            System.out.println("Всего " + count + " товаров на сумму " + sum + " рублей");
-        }
-    }
-
     public static void closingAnOrder(int[][] basket, int[][] previousBasket) {
         for (int i = 0; i < basket.length; i++) {
             if (basket[i][1] != 0) {
                 previousBasket[i][1] = basket[i][1];
             }
         }
-        printBasket(basket);
+        BasketAtctions.printBasket(basket, Store.getStore());
         System.out.println("Для оплаты товаров перейдите по ссылке: 'ССЫЛКА НА ОПЛАТУ' ");
         System.out.println("Оплата прошла успешно!");
         System.out.println("Товар доставлен!");
@@ -188,7 +136,7 @@ public class Main {
                 basket[i][1] = previousBasket[i][1];
             }
         }
-        printBasket(basket);
+        BasketAtctions.printBasket(basket, Store.getStore());
         System.out.println("Для оплаты товаров перейдите по ссылке: 'ССЫЛКА НА ОПЛАТУ' ");
         System.out.println("Оплата прошла успешно!");
         System.out.println("Товар доставлен!");
@@ -197,17 +145,5 @@ public class Main {
         }
     }
 
-    public static boolean basketIsEmpty(int[][] basket) {
-        int count = 0;
-        for (int i = 0; i < basket.length; i++) {
-            if (basket[i][1] != 0) {
-                count += basket[i][1];
-            }
-        }
-        if (count == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
 }

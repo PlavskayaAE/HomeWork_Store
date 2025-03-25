@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Store {
-   private static List<Product> store = new ArrayList<>();
+    private static List<Product> store = new ArrayList<>();
 
     static List<Product> getStore() {
         return store;
@@ -27,12 +27,17 @@ public class Store {
                     .withMappingStrategy(strategy)
                     .build();
             store = csv.parse();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        for (int i=0; i< store.size(); i++){
-            store.get(i).setArticle(i+1);
+
+        for (int i = 0; i < store.size(); i++) {
+            store.get(i).setArticle(i + 1);
         }
+
+        store.add(new Tea((store.size()+1), "Черный", 60));
+        store.add(new Tea((store.size()+1),"Зеленый", 60));
     }
 
     static void printStoreList() {

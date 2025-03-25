@@ -1,6 +1,6 @@
 package ru.netology;
 
-public class Product implements SerchProduct{
+public class Product implements SearchProduct {
     private int article;
     private String name;
     private String manufacturer;
